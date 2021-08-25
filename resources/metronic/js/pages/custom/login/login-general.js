@@ -21,7 +21,7 @@ var KTLogin = function() {
         var validation;
 
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-        validation = FormValidation.formValidation(
+        /* validation = FormValidation.formValidation(
 			KTUtil.getById('kt_login_signin_form'),
 			{
 				fields: {
@@ -47,9 +47,9 @@ var KTLogin = function() {
 					bootstrap: new FormValidation.plugins.Bootstrap()
 				}
 			}
-		);
+		); */
 
-        $('#kt_login_signin_submit').on('click', function (e) {
+        /* $('#kt_login_signin_submit').on('click', function (e) {
             e.preventDefault();
 
             validation.validate().then(function(status) {
@@ -79,7 +79,7 @@ var KTLogin = function() {
 					});
 				}
 		    });
-        });
+        }); */
 
         // Handle forgot button
         $('#kt_login_forgot').on('click', function (e) {
@@ -99,7 +99,7 @@ var KTLogin = function() {
         var form = KTUtil.getById('kt_login_signup_form');
 
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-        validation = FormValidation.formValidation(
+        /* validation = FormValidation.formValidation(
 			form,
 			{
 				fields: {
@@ -185,7 +185,7 @@ var KTLogin = function() {
 					});
 				}
 		    });
-        });
+        }); */
 
         // Handle cancel button
         $('#kt_login_signup_cancel').on('click', function (e) {
@@ -199,7 +199,7 @@ var KTLogin = function() {
         var validation;
 
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-        validation = FormValidation.formValidation(
+        /* validation = FormValidation.formValidation(
 			KTUtil.getById('kt_login_forgot_form'),
 			{
 				fields: {
@@ -243,7 +243,7 @@ var KTLogin = function() {
 					});
 				}
 		    });
-        });
+        }); */
 
         // Handle cancel button
         $('#kt_login_forgot_cancel').on('click', function (e) {

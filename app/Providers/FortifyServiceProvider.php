@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Contracts\LoginResponse;
+// Model
+use App\Models\User;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -21,7 +27,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                $user = User::where('email', $request->email)->first();
+                return redirect('/'. $user->roles->pluck('name')[0]);
+            }
+        });
     }
 
     /**
@@ -42,6 +54,33 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+
+        // Authentication User
+        Fortify::authenticateUsing(function (Request $request) 
+        {
+            // Get user from request to database
+            $user = User::where('email', $request->email)->first();
+            
+            // If user avaible
+            if($user) 
+            {
+                // If password failed
+                if (! isset($request->password) || ! Hash::check($request->password, $user->password)) 
+                {
+                    throw ValidationException::withMessages([
+                        Fortify::username() => [trans('auth.password')],
+                    ]);
+                }
+
+                return $user;
+            } else 
+            {
+                throw ValidationException::withMessages([
+                    Fortify::username() => [trans('auth.failed')],
+                ]);
+            }
         });
     }
 }

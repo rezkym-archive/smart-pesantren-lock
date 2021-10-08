@@ -1,63 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Daarut Tauhiid Boarding School Putra ~ Pengasuhan
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi yang di rancang khusus untuk Daarut Tauhiid Boarding School Putra bagian Pengasuhan. Aplikasi ini bertujuan untuk mempermudah kerja civitas terutama pada pengasuhan.
 
-## About Laravel
+# Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Fitur yang terdapat dalam aplikasi
+* Admin 👨‍⚖️
+	* Kelola Civitas
+	* Kelola Santri
+	* Kelola data setoran / hafalan
+	* Kelola keuangan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Civitas 👨‍💼
+	* Kelola santri didik
+	* Kelola setoran / hafalan santri didik
+	* Kelola status santri didik
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Wali murid/santri 🤵
+	*	Kelola status
+	*	Kelola Keuangan
+	*	Ajukan Perizinan
 
-## Learning Laravel
+* Autentikasi 💻
+	* Masuk
+	* Daftar
+	* Lupa kata sandi
+	* Verifikasi email
+	* Verifikasi nomor hp
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Ingin mencoba? 😎
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Kunjungi link berikut ini < link >, lalu gunakan akun dibawah ini untuk masuk
 
-## Laravel Sponsors
+**Admin** 👨‍⚖️
+*username/email 	: demoadmin
+*password				: demoadmin
+	
+**Civitas** 👨‍💼
+*username/email	: democivi
+*password		: democivi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+**Wali Murid** 🤵
+*username/email	: demowali
+*password		: demowali
 
-### Premium Partners
+## Instalasi 📥
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
+1. **Clone repository**
+	~~~
+	git clone https://github.com/rezkym/pengasuhan-dtbsputra.git
+	cd pengasuhan-dtbsputra
+	composer install
+	npm install
+	~~~
+	
+3. **Konfigurasi Database**
+	
+	Buka .env lalu ubah baris berikut sesuai dengan database kamu
+	~~~
+	DB_PORT=3306
+	DB_DATABASE=pengasuhan
+	DB_USERNAME=root
+	DB_PASSWORD=
+	~~~
+	
+4. **Konfigurasi Sistem**
+	~~~
+	php artisan key:generate
+	php artisan migrate:fresh --seed
+	~~~
 
-## Contributing
+    > Jalankan npm install & npm run dev ( Langkah ini opsional )
+	
+	Apabila sudah menjalan perintah di atas, silahkan jalankan server dengan
+	~~~
+	php artisan serve
+	~~~
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Pengembang
 
-## Code of Conduct
+* Rezky Maulana
+	* [Instagram](https://instagram.com/rezzkyym)
+	* [Facebook](https://www.facebook.com/rzky.nv/)
+	* [linkedin](https://www.linkedin.com/in/rezky-maulana-3b249a1aa/)
+	* [Portofolio](https://rezky.my.id)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* Javier Ghani Fairuz as Mathematic man
+	* [Instagram](https://instagram.com/javier_ghani_fairuz)
 
-## Security Vulnerabilities
+* Bagas Prayogo
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* Yusuf Ahmad Muzaki
+	* [Instagram](https://instagram.com/yusuf.amz)
+	
+		
 
-## License
+## Kontribusi 🙌
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Jadilah pengembang untuk aplikasi pondok pesantren ini.
+Laporan bug, kesalahan, sangat di perlukan dalam pengembangan aplikasi ini.
+Terimakasih sudah bergabung.
+
+## License 📝
+
+ Copyright © 2020 **Made with ❤️ by Rezky Maulana .**
+
+ * Thanks to <a href="http://devover.id">DevoverID</a>

@@ -4,8 +4,18 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\Auth\Social\GoogleController;
+use App\Http\Livewire\Teacher\Halaqoh\CreateHalaqohLivewire;
+use App\Models\HalaqohHistory;
+use App\Models\Mutabaah;
+use App\Models\MutabaahAchievement;
+use App\Models\Surah;
+use App\Models\Teacher;
+use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
-
+date_default_timezone_set('Asia/Jakarta');
 
 /*
 |--------------------------------------------------------------------------
@@ -18,46 +28,57 @@ use App\Http\Controllers\Auth\Social\GoogleController;
 |
 */
 
-Route::middleware(['role:admin', 'auth:sanctum'])->get('/', [PagesController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/', function () {
+    $getFirstRoleUserName = Auth::user()->roles->pluck('name')->first();
+    return redirect('/' . $getFirstRoleUserName);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes Class
+|--------------------------------------------------------------------------
+|
+| All routes of admin inside this class
+| 
+| 
+|
+*/
+
+\App\Classes\Routes\AdminRoutesClass::initRoutes();
+
+/*
+|--------------------------------------------------------------------------
+| Teacher Routes Class
+|--------------------------------------------------------------------------
+|
+| All routes of teacher inside this class
+| 
+| 
+|
+*/
+
+\App\Classes\Routes\TeacherRoutesClass::initRoutes();
+
+/*
+|--------------------------------------------------------------------------
+| Student Routes Class
+|--------------------------------------------------------------------------
+|
+| All routes of student inside this class
+| 
+| 
+|
+*/
+
+\App\Classes\Routes\StudentRoutesClass::initRoutes();
 
 
-/* Admin Role */
-Route::group([
-       'middleware' => ['auth:sanctum', 'role:admin'],
-       'prefix'     => 'admin',
-       'as'         => 'admin.',
-    ],
-    function () {
 
-        // Dashboard
-        Route::get('/', [\Controller\Admin\HomeController::class, 'create'])->name('home');
+Route::get('/tes', function () {
 
-        // Data santri route
-        Route::get('data-santri', [\Controller\Admin\Kesantrian\DataSantri::class, 'create'])->name('data-santri');
-
-        // Data izin santri route
-        Route::get('student-permission', [\Controller\Admin\Kesantrian\StudentPermission::class, 'create'])->name('student-permission');
-
-        // Aksi kesantrian route
-    }
-);
-
-
-
-
-
-
-
-
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
+});
 
 // Route::get('/', 'PagesController@index');
-
-
 
 // Demo routes
 Route::get('/datatables', [PagesController::class, 'datatables']);
@@ -73,8 +94,3 @@ Route::get('/icons/svg', [PagesController::class, 'svg']);
 
 // Quick search dummy route to display html elements in search dropdown (header search)
 Route::get('/quick-search', [PagesController::class, 'quickSearch'])->name('quick-search');
-
-// Google auth (Laravel socialate)
-/* Route::get('/home', 'HomeController@index')->name('home'); */
-Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth-google');
-Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback-google');

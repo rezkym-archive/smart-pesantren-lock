@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\Admin\Admin\Kesantrian;
+namespace Controllers\Admin\Kesantrian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

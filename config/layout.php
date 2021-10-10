@@ -78,7 +78,7 @@ return [
         'self' => [
             'display' => false,
             'width' => 'fluid', // fixed, fluid
-            'theme' => 'light', // light, dark
+            'theme' => 'dark', // light, dark
             'fixed' => [
                 'desktop' => true,
                 'mobile' => true
@@ -87,7 +87,7 @@ return [
 
         'menu' => [
             'self' => [
-                'display' => true,
+                'display' => false,
                 'layout'  => 'default', // tab, default
                 'root-arrow' => false, // true, false
             ],
@@ -186,7 +186,7 @@ return [
 
         // Notifications
         'notifications' => [
-            'display' => true,
+            'display' => false,
             'layout' => 'dropdown', // offcanvas, dropdown
             'dropdown' => [
                 'style' => 'dark' // light|dark

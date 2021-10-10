@@ -2,6 +2,7 @@
 
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
+use Illuminate\Support\Facades\Auth;
 
 return [
 
@@ -132,7 +133,7 @@ return [
     */
 
     'features' => [
-        //Features::registration(),
+        Features::registration(),
         //Features::resetPasswords(),
         // Features::emailVerification(),
         //Features::updateProfileInformation(),

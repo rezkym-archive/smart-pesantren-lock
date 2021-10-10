@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Teacher;
+use App\Models\Student;
+use App\Models\TeacherStudents;
 
 class UserSeeder extends Seeder
 {
@@ -26,12 +30,41 @@ class UserSeeder extends Seeder
 
         $admin->assignRole('admin');
 
-        $user = User::create([
-            'name' => 'User Role',
+        $teacher = User::create([
+            'name' => 'Teacher Role',
+            'email' => 'teacher@tes.com',
+            'password' => Hash::make('123'),
+        ]);
+
+        $teacher_model = Teacher::create([
+            'user_id' => $teacher->id,
+            'name'  => $teacher->name,
+        ]);
+
+        $teacher->assignRole('teacher');
+
+        $student = User::create([
+            'name' => 'Student Role',
             'email' => 'user@tes.com',
             'password' => Hash::make('123'),
         ]);
 
-        $user->assignRole('student');
+        $student = User::create([
+            'name' => 'Rezky Maulana ~ Student',
+            'email' => 'rezky@tes.com',
+            'password' => Hash::make('123'),
+        ]);
+
+        $student_model = Student::create([
+            'user_id' => $student->id,
+            'name'  => $student->name,
+        ]);
+
+        $student->assignRole('student');
+
+        TeacherStudents::create([
+            'student_id'    => $student_model->id,
+            'teacher_id'    => $teacher_model->id,
+        ]);
     }
 }

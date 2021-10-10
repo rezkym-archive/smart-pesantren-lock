@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Social;
+namespace Controllers\Auth\Social;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Fortify\Fortify;
 use Exception;
 
 use App\Models\User;
+use Illuminate\Routing\Route;
 
 class GoogleController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * RedirectToGoogle
      *
      * @return void
      */
@@ -22,45 +24,62 @@ class GoogleController extends Controller
     {
         return Socialite::driver('google')->redirect();
     }
-      
+
     /**
-     * Create a new controller instance.
+     * handleGoogleCallback
      *
      * @return void
      */
     public function handleGoogleCallback()
     {
+        // Try to auth from login
         try {
-    
+
+            // Get user data from google
             $user = Socialite::driver('google')->user();
-     
-            $finduser = User::where('google_id', $user->id)->first();
-     
-            if($finduser){
-     
+
+            // Find user at the database
+            $finduser = User::where('google_id', $user->id)->first() ?? User::where('email', $user->email)->first();
+
+            if ($finduser OR !is_null($finduser))
+            {
+                // Auth login.
                 Auth::login($finduser);
-    
-                return redirect('/');
-     
-            }else{
+
+                // Redirect user to spesific role route
+                return redirect('/'. $finduser->roles->pluck('name')[0]);
+
+            } else
+            {
+                // Create new user
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
-                    'google_id'=> $user->id,
-                    'password' => Hash::make('tes'),
+                    'google_id' => $user->id,
+                    'password' => Hash::make('123'),
+                    'profile_photo_path' => $user->avatar,
                 ]);
-                
+
+                $newUser->email_verified_at = now();
+                $newUser->save();
+
                 // Default role
                 $newUser->assignRole('student');
 
                 // Attempt login
                 Auth::login($newUser);
-     
-                return redirect('/');
+
+                // Redirect to student URL
+                return redirect()->route('student.home');
             }
-    
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } catch (Exception $e)
+        {
+            // Return the error
+            return redirect()->route('login')->withMessage([
+                Fortify::username() => [$e->getMessage()]
+            ]);
+
+            //dd($e->getMessage());
         }
     }
 }

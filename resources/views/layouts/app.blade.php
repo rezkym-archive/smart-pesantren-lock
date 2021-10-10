@@ -1,46 +1,68 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{ Metronic::printAttrs('html') }} {{ Metronic::printClasses('html') }}>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8"/>
+
+        {{-- Title Section --}}
+        <title>{{ config('app.name') }} | @yield('title', $page_title ?? '')</title>
+
+        {{-- Meta Data --}}
+        <meta name="description" content="@yield('page_description', $page_description ?? '')"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        {{-- Favicon --}}
+        <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" />
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        {{-- Fonts --}}
+        {{ Metronic::getGoogleFontsInclude() }}
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        {{-- Global Theme Styles (used by all pages) --}}
+        @foreach(config('layout.resources.css') as $style)
+            <link href="{{ config('layout.self.rtl') ? asset(Metronic::rtlCssPath($style)) : asset($style) }}" rel="stylesheet" type="text/css"/>
+        @endforeach
 
+        {{-- Layout Themes (used by all pages) --}}
+        @foreach (Metronic::initThemes() as $theme)
+            <link href="{{ config('layouts.self.rtl') ? asset(Metronic::rtlCssPath($theme)) : asset($theme) }}" rel="stylesheet" type="text/css"/>
+        @endforeach
+
+        {{-- Includable CSS --}}
+        @yield('styles')
+
+        {{-- Livewire Style --}}
         @livewireStyles
 
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+    <body {{ Metronic::printAttrs('body') }} {{ Metronic::printClasses('body') }}>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+        @if (config('layouts.page-loader.type') != '')
+            @include('layouts.partials._page-loader')
+        @endif
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+        @include('layouts.base._layout')
 
-        @stack('modals')
+        <script>var HOST_URL = "{{ route('quick-search') }}";</script>
 
+        {{-- Global Config (global config for global JS scripts) --}}
+        <script>
+            var KTAppSettings = {!! json_encode(config('layout.js'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES) !!};
+        </script>
+
+        {{-- Global Theme JS Bundle (used by all pages)  --}}
+        @foreach(config('layout.resources.js') as $script)
+            <script src="{{ asset($script) }}" type="text/javascript"></script>
+        @endforeach
+
+        {{-- Includable JS from @section --}}
+        @yield('scripts')
+
+        {{-- Includable JS from @push --}}
+        @stack('scripts')
+
+        {{-- Livewire Script --}}
         @livewireScripts
     </body>
 </html>
+

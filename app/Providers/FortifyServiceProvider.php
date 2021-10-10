@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\LoginResponse;
+
 // Model
 use App\Models\User;
 
@@ -27,11 +28,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse
+        {
             public function toResponse($request)
             {
+                // user variable
                 $user = User::where('email', $request->email)->first();
-                return redirect('/'. $user->roles->pluck('name')[0]);
+
+                // return to spesific role route
+                return redirect('/' . $user->roles->pluck('name')[0]);
             }
         });
     }
@@ -49,7 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(5)->by($request->email.$request->ip());
+            return Limit::perMinute(5)->by($request->email . $request->ip());
         });
 
         RateLimiter::for('two-factor', function (Request $request) {
@@ -58,25 +63,24 @@ class FortifyServiceProvider extends ServiceProvider
 
 
         // Authentication User
-        Fortify::authenticateUsing(function (Request $request) 
-        {
+        Fortify::authenticateUsing(function (Request $request) {
             // Get user from request to database
             $user = User::where('email', $request->email)->first();
-            
+
             // If user avaible
-            if($user) 
-            {
+            if ($user) {
                 // If password failed
-                if (! isset($request->password) || ! Hash::check($request->password, $user->password)) 
-                {
+                if (!isset($request->password) || !Hash::check($request->password, $user->password)) {
+                    // return with failed password message
                     throw ValidationException::withMessages([
                         Fortify::username() => [trans('auth.password')],
                     ]);
                 }
 
+                // return the requested user
                 return $user;
-            } else 
-            {
+            } else {
+                // return with can't find the account
                 throw ValidationException::withMessages([
                     Fortify::username() => [trans('auth.failed')],
                 ]);

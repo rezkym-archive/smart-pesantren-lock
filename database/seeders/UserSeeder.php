@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Binsis;
 use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\TeacherStudents;
@@ -22,49 +23,105 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::create([
+        // Admin seeder
+        $this->adminSeeder();
+
+        // Teacher seeder
+        $this->TeacherSeeder();
+
+        // Binsis seeder
+        $this->BinsisSeeder();
+
+        // Student seeder
+        $this->StudentSeeder();
+
+        // Create default TeacherStudents data
+        TeacherStudents::create([
+            'student_id'    => $this->studentModel->id,
+            'teacher_id'    => $this->teacherModel->id,
+        ]);
+    }
+
+    /**
+     * adminSeeder
+     * 
+     * @return object
+     */
+    protected function adminSeeder()
+    {
+        $this->admin = User::create([
             'name' => 'Admin Role',
             'email' => 'admin@tes.com',
             'password' => Hash::make('123'),
         ]);
 
-        $admin->assignRole('admin');
+        $this->admin->assignRole('admin');
 
-        $teacher = User::create([
+        return $this;
+    }
+    
+    /**
+     * TeacherSeeder
+     * 
+     * @return object
+     */
+    protected function TeacherSeeder()
+    {
+        $this->teacher = User::create([
             'name' => 'Teacher Role',
             'email' => 'teacher@tes.com',
             'password' => Hash::make('123'),
         ]);
 
-        $teacher_model = Teacher::create([
-            'user_id' => $teacher->id,
-            'name'  => $teacher->name,
+        $this->teacherModel = Teacher::create([
+            'user_id' => $this->teacher->id,
+            'name'  => $this->teacher->name,
         ]);
 
-        $teacher->assignRole('teacher');
+        $this->teacher->assignRole('teacher');
 
-        $student = User::create([
-            'name' => 'Student Role',
-            'email' => 'user@tes.com',
+        return $this;
+    }
+
+    /**
+     * BinsisSeeder
+     * 
+     * @return object
+     */
+    protected function BinsisSeeder()
+    {
+        $this->binsis = User::create([
+            'name' => 'Binsis Role',
+            'email' => 'binsis@tes.com',
             'password' => Hash::make('123'),
         ]);
 
-        $student = User::create([
+        $this->binsisModel = Binsis::create([
+            'user_id' => $this->binsis->id,
+            'name'  => $this->binsis->name,
+        ]);
+
+        $this->binsis->assignRole('binsis');
+    }
+
+    /**
+     * StudentSeeder
+     * 
+     * @return object
+     */
+    protected function StudentSeeder()
+    {
+        $this->student = User::create([
             'name' => 'Rezky Maulana ~ Student',
             'email' => 'rezky@tes.com',
             'password' => Hash::make('123'),
         ]);
 
-        $student_model = Student::create([
-            'user_id' => $student->id,
-            'name'  => $student->name,
+        $this->studentModel = Student::create([
+            'user_id' => $this->student['id'],
+            'name'  => $this->student['name'],
         ]);
 
-        $student->assignRole('student');
-
-        TeacherStudents::create([
-            'student_id'    => $student_model->id,
-            'teacher_id'    => $teacher_model->id,
-        ]);
+        $this->student->assignRole('student');
     }
 }

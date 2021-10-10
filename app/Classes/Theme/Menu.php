@@ -42,7 +42,7 @@ class Menu
             $item_class = '';
             $item_attr = '';
 
-            if (isset($item['permission']) && $user->can($item['permission'])) {
+            if (isset($item['permission']) && $user->can($item['permission']) OR $item['permission'] == false) {
                 if (isset($item['submenu'])) {
                     $item_class .= ' menu-item-submenu'; // m-menu__item--active
 
@@ -457,6 +457,7 @@ class Menu
     // Check for active Vertical Menu item
     public static function isActiveVerMenuItem($item, $page, $rec = 0)
     {
+        
         if (isset($item['redirect']) && $item['redirect'] == $page) {
             return false;
         }
@@ -464,6 +465,10 @@ class Menu
         self::checkRecursion($rec);
 
         if (isset($item['page']) && $item['page'] == $page) {
+            return true;
+        }
+
+        if (isset($item['page_up']) && $item['page_up'] == $page) {
             return true;
         }
 

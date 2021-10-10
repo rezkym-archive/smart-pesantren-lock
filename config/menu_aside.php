@@ -9,8 +9,8 @@ return [
             //'permission' => 'primary_dashboard',
             'root' => true,
             'icon' => 'media/svg/icons/Design/Layers.svg', // or can be 'flaticon-home' or any flaticon-*
-            'page_up' => '/',
-            'permission' => 'primary_dashboard_all',
+            'page' => '/',
+            'permission' => false,
             'new-tab' => false,
         ],
 
@@ -105,7 +105,7 @@ return [
                     'title' => 'Mutabaah',
                     'permission' => 'mutabaah_student',
                     'bullet' => 'dot',
-                    'page' => '/student/mutabaah',
+                    'page' => 'student/mutabaah',
                     /* 'label' => [
                         'type' => 'label-danger label-inline',
                         'value' => 'new'

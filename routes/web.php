@@ -1,21 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\PagesController;
-use App\Http\Controllers\Auth\Social\GoogleController;
-use App\Http\Livewire\Teacher\Halaqoh\CreateHalaqohLivewire;
-use App\Models\HalaqohHistory;
-use App\Models\Mutabaah;
-use App\Models\MutabaahAchievement;
-use App\Models\Surah;
-use App\Models\Teacher;
-use App\Models\User;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
-
-date_default_timezone_set('Asia/Jakarta');
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +48,19 @@ Route::middleware('auth:sanctum')->get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
+| Teacher Routes Class
+|--------------------------------------------------------------------------
+|
+| All routes of teacher inside this class
+| 
+| 
+|
+*/
+
+\App\Classes\Routes\BinsisRouteClass::initRoutes();
+
+/*
+|--------------------------------------------------------------------------
 | Student Routes Class
 |--------------------------------------------------------------------------
 |
@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->get('/', function () {
 
 
 Route::get('/tes', function () {
+
 
 });
 

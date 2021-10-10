@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Support\Facades\DB;
 
 class PermissionsDefaultSeeder extends Seeder
 {
@@ -19,43 +20,39 @@ class PermissionsDefaultSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'primary_dashboard_all', 'guard_name' => 'web']);
+        // Reset cached roles and permissions
+        $configRoleHasPermission = config('role_permission.role_has_permission');
 
-        Permission::create(['name' => 'manage_kesantrian_admin', 'guard_name' => 'web']);
-        Permission::create(['name' => 'manage_halaqoh_admin', 'guard_name' => 'web']);
-        Permission::create(['name' => 'manage_attendance_admin', 'guard_name' => 'web']);
+        // Separate data owned by "role has permission" in config
+        foreach ($configRoleHasPermission as $dataRoleHasPermission) {
 
-        Permission::create(['name' => 'halaqoh_teacher', 'guard_name' => 'web']);
-        Permission::create(['name' => 'attendance_teacher', 'guard_name' => 'web']);
-        
-        Permission::create(['name' => 'mutabaah_student', 'guard_name' => 'web']);
+            // Inserting permissions to database
+            $insertPermissions = fn ($role) => collect($dataRoleHasPermission[$role])
+                ->map(fn ($name) => DB::table('permissions')->insertGetId(['name' => $name, 'guard_name' => 'web']))
+                ->toArray();
 
+            // Summarizes the received data into an array
+            foreach ($dataRoleHasPermission as $key => $value) {
+                $permissionIdsByRole = [
+                    $key => $insertPermissions($key),
+                ];
+            }
 
+            // Match and insert data into "role_has_permission" database
+            foreach ($permissionIdsByRole as $role => $permissionIds) {
 
+                // Find role by name
+                $role = Role::whereName($role)->first();
 
-        // create roles and assign existing permissions
-        $role_admin = Role::create(['name' => 'admin']);
-        $role_admin->givePermissionTo(
-            Permission::where('name', 'LIKE', '%admin%')
-                ->Orwhere('name', 'LIKE', '%all%')
-                ->get()
-        );
-
-        $teacher_role = Role::create(['name' => 'teacher']);
-        $teacher_role->givePermissionTo(
-            Permission::where('name', 'LIKE', '%teacher%')
-                ->Orwhere('name', 'LIKE', '%all%')
-                ->get()
-        );
-
-        $student_role = Role::create(['name' => 'student']);
-        $student_role->givePermissionTo(
-            Permission::where('name', 'LIKE', '%student%')
-            ->Orwhere('name', 'LIKE', '%all%')
-                ->get()
-        );
-
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
+                // Match and innserting to database
+                DB::table('role_has_permissions')
+                    ->insert(
+                        collect($permissionIds)->map(fn ($id) => [
+                            'role_id' => $role->id,
+                            'permission_id' => $id
+                        ])->toArray()
+                    );
+            }
+        }
     }
 }

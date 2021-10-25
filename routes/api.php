@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Surah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('search', function (Request $request) {
+    $query = $request->get('query');
+    $filterResult = User::where('name', 'LIKE', '%'. $query. '%')->get();
+    return response()->json($filterResult);
+})->name('find-student');
+
+Route::get('search/{query}', function ($query) {
+    $filterResult = User::where('name', 'LIKE', '%'. $query. '%')->get();
+    return response()->json($filterResult);
+})->name('find-student-query');

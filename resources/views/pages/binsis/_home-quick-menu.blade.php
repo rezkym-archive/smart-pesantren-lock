@@ -15,17 +15,21 @@
             {{-- Row --}}
             <div class="row m-0">
                 <div class="col bg-light-warning px-6 py-8 rounded-xl mr-7 mb-7">
-                    {{ Metronic::getSVG("media/svg/icons/Media/Equalizer.svg", "svg-icon-3x svg-icon-warning d-block my-2") }}
+                    {{ Metronic::getSVG('media/svg/icons/Media/Equalizer.svg', 'svg-icon-3x svg-icon-warning d-block my-2') }}
                     <a href="#" class="text-warning font-weight-bold font-size-h6">
                         Prestasi Baru
                     </a>
                 </div>
-                <div class="col bg-light-primary px-6 py-8 rounded-xl mb-7">
-                    {{ Metronic::getSVG("media/svg/icons/Communication/Add-user.svg", "svg-icon-3x svg-icon-primary d-block my-2") }}
-                    <a href="#" class="text-primary font-weight-bold font-size-h6 mt-2">
-                        Pelanggaran Baru
-                    </a>
-                </div>
+                @if (Route::has('binsis.violation.create'))
+                    <div class="col bg-light-primary px-6 py-8 rounded-xl mb-7">
+                        {{ Metronic::getSVG('media/svg/icons/Communication/Add-user.svg', 'svg-icon-3x svg-icon-primary d-block my-2') }}
+                        <a href="{{ route('binsis.violation.create') }}"
+                            class="text-primary font-weight-bold font-size-h6 mt-2">
+                            Pelanggaran Baru
+                        </a>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

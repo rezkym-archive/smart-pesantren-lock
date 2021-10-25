@@ -22,6 +22,7 @@ class BinsisRouteClass
             function () {
 
                 self::initHomePage();
+                self::initViolation();
             }
         );
     }
@@ -36,5 +37,13 @@ class BinsisRouteClass
     {
         // Dashboard
         Route::get('/', [\Controllers\Binsis\HomeController::class, 'create'])->name('home');
+    }
+
+    /**
+     * * initialize violation
+     */
+    protected static function initViolation()
+    {
+        Route::resource('violation', \Controllers\Binsis\ViolationController::class);
     }
 }

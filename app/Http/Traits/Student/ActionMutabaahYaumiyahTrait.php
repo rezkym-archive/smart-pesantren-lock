@@ -191,24 +191,25 @@ trait ActionMutabaahYaumiyahTrait
         $this->processShalatDhuha($request->shalat_dhuha);
 
         /**
-         * Algorithm
+         * "calculateEndCintaShalat" starts from "0", 
+         * then added to each mandatory prayer, 
+         * after the addition is complete it will enter the "FinalCintaShalat" 
+         * process where "calculateEndCintaShalat" 
+         * is divided by the standard of each prayer then multiplied by "100" 
+         * (100 because the final value is desired)
          */
 
+        // Algorithm
         $this->calculateEndCintaShalat = 0;
         $this->calculateEndCintaShalat += $this->countShalatFardhu;
         $this->calculateEndCintaShalat += $this->isShalatRawatib;
         $this->calculateEndCintaShalat += $this->isShalatTahajjud;
         $this->calculateEndCintaShalat += $this->isShalatDhuha;
         
+        // Final Cinta Shalat
         $this->FinalCintaShalat = $this->calculateEndCintaShalat/$this->standardValue->shalat['total']*100;
 
-
-        // 5/155
-        //$this->FinalCintaShalat = $this->avgShalatFardhu + $this->avgShalatRawatib;
-        //dd($this->standardValue->shalat['total']);
-        //$this->FinalCintaShalat = $this->kalkulasiShalat/1395*100;
-        //$this->calculateEndCintaShalat; //$this->calculateEndCintaShalat/$this->standardValue->shalat['total']*31;
-        
+        return $this;
     }
 
     /**

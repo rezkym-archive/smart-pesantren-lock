@@ -25,7 +25,7 @@ class Helper
             'pageHeader' => true,
             'contentLayout' => 'default',
             'blankPage' => false,
-            'defaultLanguage' => 'en',
+            'defaultLanguage' => 'id',
             'direction' => env('MIX_CONTENT_DIRECTION', 'ltr'),
         ];
 
@@ -50,7 +50,7 @@ class Helper
             'blankPage' => array(false, true),
             'sidebarPositionClass' => array('content-left-sidebar' => 'sidebar-left', 'content-right-sidebar' => 'sidebar-right', 'content-detached-left-sidebar' => 'sidebar-detached sidebar-left', 'content-detached-right-sidebar' => 'sidebar-detached sidebar-right', 'default' => 'default-sidebar-position'),
             'contentsidebarClass' => array('content-left-sidebar' => 'content-right', 'content-right-sidebar' => 'content-left', 'content-detached-left-sidebar' => 'content-detached content-right', 'content-detached-right-sidebar' => 'content-detached content-left', 'default' => 'default-sidebar'),
-            'defaultLanguage' => array('en' => 'en', 'fr' => 'fr', 'de' => 'de', 'pt' => 'pt'),
+            'defaultLanguage' => array('id' => 'id', 'en' => 'en'),
             'direction' => array('ltr', 'rtl'),
         ];
 
